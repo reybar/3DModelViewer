@@ -12,7 +12,7 @@ class ModelViewer : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit ModelViewer(QWidget *parent = nullptr);
+    explicit ModelViewer(QWidget *central = nullptr, QWidget *parent = nullptr);
     ~ModelViewer();
 
 private:
