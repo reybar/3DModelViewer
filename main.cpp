@@ -4,8 +4,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    ModelViewer w;
-    w.show();
+
+    ModelViewer *modelViewer =new ModelViewer();
+    modelViewer->show();
 
     return a.exec();
 }
+
