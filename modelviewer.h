@@ -15,9 +15,14 @@
 
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include <QtGui>
-
 #include <QTransform>
+
+#include <QFile>
+#include <QFileDialog>
+#include <QString>
+#include <QMessageBox>
+#include <QMesh>
+#include <QUrl>
 
 
 namespace Ui {
@@ -35,17 +40,21 @@ public:
     void keyPressEvent(QKeyEvent *event);
 
 
+private slots:
+    void on_actionOpen_File_triggered();
+
 private:
     Ui::ModelViewer *ui;
 
     void Camera(Qt3DExtras::Qt3DWindow *view);
     void KeyControls(QKeyEvent *event);
 
-    Qt3DCore::QEntity *createScene();
+    Qt3DCore::QEntity *startScene();
+    Qt3DCore::QEntity *createScene(Qt3DRender::QMesh *mesh);
     Qt3DCore::QEntity *model;
     Qt3DCore::QTransform *transform;
 
-    QPoint m_lastPos;
+    QString currentFile = "";
 };
 
 #endif // MODELVIEWER_H

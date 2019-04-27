@@ -10,7 +10,7 @@ ModelViewer::ModelViewer(QWidget *parent) :
     Qt3DExtras::Qt3DWindow *view = new Qt3DExtras::Qt3DWindow();
     QWidget *widget = QWidget::createWindowContainer(view);
 
-    view->setRootEntity(createScene());
+    view->setRootEntity(startScene());
     view->defaultFrameGraph()->setClearColor(QColor(QRgb(0x42f4bc)));
     Camera(view);
 
@@ -73,7 +73,7 @@ void ModelViewer::Camera(Qt3DExtras::Qt3DWindow *view)
     camera->setViewCenter(QVector3D(0, 0, 0));
 }
 
-Qt3DCore::QEntity *ModelViewer::createScene()
+Qt3DCore::QEntity *ModelViewer::startScene()
 {
     Qt3DCore::QEntity *rootEntity = new Qt3DCore::QEntity();
 
@@ -107,4 +107,57 @@ Qt3DCore::QEntity *ModelViewer::createScene()
 
 }
 
+Qt3DCore::QEntity *ModelViewer::createScene(Qt3DRender::QMesh *mesh)
+{
+    Qt3DCore::QEntity *rootEntity = new Qt3DCore::QEntity();
 
+    Qt3DRender::QMaterial *material = new Qt3DExtras::QPhongMaterial(rootEntity);
+    model = new Qt3DCore::QEntity(rootEntity);
+
+    transform = new Qt3DCore::QTransform;
+    transform->setScale3D(QVector3D(1, 1, 1));
+    transform->setRotation(QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), 0));
+
+
+    Qt3DCore::QEntity *lightEntity = new Qt3DCore::QEntity(rootEntity);
+    Qt3DRender::QPointLight *light = new Qt3DRender::QPointLight(lightEntity);
+    light->setColor("white");
+    light->setIntensity(1);
+    lightEntity->addComponent(light);
+    Qt3DCore::QTransform *lightTransform = new Qt3DCore::QTransform(lightEntity);
+    lightTransform->setTranslation(QVector3D(0,0,40));
+    lightEntity->addComponent(lightTransform);
+
+    model->addComponent(mesh);
+    model->addComponent(transform);
+    model->addComponent(material);
+
+    return rootEntity;
+
+}
+
+
+void ModelViewer::on_actionOpen_File_triggered()
+{
+    QString filename= QFileDialog::getOpenFileName(this,"Open file");
+    QFile file(filename);
+    currentFile = filename;
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this,"Warning", "Cannot open "+file.errorString());
+    }
+    setWindowTitle(filename);
+    Qt3DRender::QMesh *mesh = new Qt3DRender::QMesh();
+    QUrl data =QUrl::fromLocalFile(filename);
+    mesh->setSource(data);
+
+
+
+    Qt3DExtras::Qt3DWindow *view = new Qt3DExtras::Qt3DWindow();
+    QWidget *widget = QWidget::createWindowContainer(view);
+
+    view->setRootEntity(createScene(mesh));
+    view->defaultFrameGraph()->setClearColor(QColor(QRgb(0x42f4bc)));
+    Camera(view);
+
+    this->setCentralWidget(widget);
+}
