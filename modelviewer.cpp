@@ -120,7 +120,7 @@ Qt3DCore::QEntity *ModelViewer::createScene(Qt3DRender::QMesh *mesh)
 
 
     Qt3DCore::QEntity *lightEntity = new Qt3DCore::QEntity(rootEntity);
-    Qt3DRender::QPointLight *light = new Qt3DRender::QPointLight(lightEntity);
+    Qt3DRender::QDirectionalLight *light = new Qt3DRender::QDirectionalLight(lightEntity);
     light->setColor("white");
     light->setIntensity(1);
     lightEntity->addComponent(light);

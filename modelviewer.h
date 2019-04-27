@@ -5,6 +5,7 @@
 #include <Qt3DCore/QEntity>
 #include <Qt3DRender/QCamera>
 #include <Qt3DRender/QPointLight>
+#include <Qt3DRender/QDirectionalLight>
 #include <Qt3DCore/QTransform>
 #include <Qt3DWindow>
 #include <QMainWindow>
