@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        modelviewer.cpp
+        modelviewer.cpp \
+        scene.cpp
 
 HEADERS += \
-        modelviewer.h
+        modelviewer.h \
+        scene.h
 
 FORMS += \
         modelviewer.ui

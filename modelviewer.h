@@ -3,20 +3,9 @@
 
 #include <QMainWindow>
 #include <Qt3DCore/QEntity>
-#include <Qt3DRender/QCamera>
-#include <Qt3DRender/QPointLight>
-#include <Qt3DRender/QDirectionalLight>
-#include <Qt3DCore/QTransform>
 #include <Qt3DWindow>
-#include <QMainWindow>
 
-#include <Qt3DExtras/QForwardRenderer>
-#include <Qt3DExtras/QPhongMaterial>
-#include <Qt3DExtras/QTorusMesh>
-
-#include <QMouseEvent>
 #include <QKeyEvent>
-#include <QTransform>
 
 #include <QFile>
 #include <QFileDialog>
@@ -25,6 +14,12 @@
 #include <QMesh>
 #include <QUrl>
 
+#include <QSlider>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+
+#include <scene.h>
 
 namespace Ui {
 class ModelViewer;
@@ -38,8 +33,13 @@ public:
     explicit ModelViewer(QWidget *parent = nullptr);
     ~ModelViewer();
 
-    void keyPressEvent(QKeyEvent *event);
+    void SetLayout();
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
+signals:
+    void KeyPressed();
 
 private slots:
     void on_actionOpen_File_triggered();
@@ -47,13 +47,8 @@ private slots:
 private:
     Ui::ModelViewer *ui;
 
-    void Camera(Qt3DExtras::Qt3DWindow *view);
-    void KeyControls(QKeyEvent *event);
-
-    Qt3DCore::QEntity *startScene();
-    Qt3DCore::QEntity *createScene(Qt3DRender::QMesh *mesh);
-    Qt3DCore::QEntity *model;
-    Qt3DCore::QTransform *transform;
+    QSlider *createSlider();
+    Scene *scene;
 
     QString currentFile = "";
 };
